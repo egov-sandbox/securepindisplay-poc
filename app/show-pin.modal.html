@@ -1,0 +1,58 @@
+<!--
+  REFERENCE template for SecurePinDisplay v1.1.
+  Merge the two marked changes into the existing v1.0 template instead of
+  replacing it wholesale (card image block, classes and i18n keys are yours).
+  CHANGE 1 (A3): [scrollY]="!pinVisible" locks scrolling during the reveal.
+  CHANGE 2 (R5): boxes hold dots when masked and NOTHING when revealed;
+                 the native overlay draws the digits on top.
+-->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'cards.showPin.title' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" [attr.aria-label]="'common.close' | translate">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" forceOverscroll="false" [scrollY]="!pinVisible">
+
+  <div class="mb-show-pin__card" [ngClass]="cardImageStyle">
+    <!-- existing card image / cardSettings block, unchanged -->
+  </div>
+
+  <div class="mb-show-pin__panel">
+    <p class="mb-show-pin__label">{{ 'cards.showPin.pinLabel' | translate }}</p>
+
+    <div class="mb-show-pin__boxes">
+      <div class="mb-show-pin__box" #pinBox>
+        <span class="mb-show-pin__dot" *ngIf="!pinVisible"></span>
+      </div>
+      <div class="mb-show-pin__box" #pinBox>
+        <span class="mb-show-pin__dot" *ngIf="!pinVisible"></span>
+      </div>
+      <div class="mb-show-pin__box" #pinBox>
+        <span class="mb-show-pin__dot" *ngIf="!pinVisible"></span>
+      </div>
+      <div class="mb-show-pin__box" #pinBox>
+        <span class="mb-show-pin__dot" *ngIf="!pinVisible"></span>
+      </div>
+    </div>
+
+    <p class="mb-show-pin__countdown" aria-hidden="true"
+       [class.mb-show-pin__countdown--hidden]="!pinVisible">
+      {{ 'cards.showPin.autoHide' | translate }} :{{ remainingSeconds }}s
+    </p>
+
+    <ion-button expand="block" (click)="onShowPin()" [disabled]="isPinDisplayActive">
+      {{ 'cards.showPin.showButton' | translate }}
+    </ion-button>
+
+    <p class="mb-show-pin__info">
+      {{ 'cards.showPin.durationInfo' | translate: { seconds: showPinViewModel.durationSeconds } }}
+    </p>
+  </div>
+
+</ion-content>
